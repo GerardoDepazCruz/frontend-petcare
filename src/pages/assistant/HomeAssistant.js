@@ -5,70 +5,61 @@ import AssistantNavbar from "./AssistantNavbar";
 export default function HomeAssistant() {
   const [citasHoy, setCitasHoy] = useState([]);
   const [usuarios, setUsuarios] = useState([]);
-  const [mascotas, setMascotas] = useState([]);
-  const [veterinarios, setVeterinarios] = useState([]);
   const token = localStorage.getItem("token");
 
   useEffect(() => {
-    fetchDatosIniciales();
+    fetchCitasHoy();
+    fetchUsuarios(); // <── cargamos usuarios para obtener nombres
   }, []);
 
   // ============================
-  //   CARGAR DATOS INICIALES
+  //      OBTENER CITAS HOY
   // ============================
-  const fetchDatosIniciales = async () => {
+  const fetchCitasHoy = async () => {
     try {
-      // 1️⃣ Usuarios
-      const resUsuarios = await fetch("https://veterinaria-petcare.onrender.com/d/w/usuarios/all", {
+      const res = await fetch("https://veterinaria-petcare.onrender.com/d/w/citas/all", {
         headers: { Authorization: `Bearer ${token}` },
       });
-      const dataUsuarios = await resUsuarios.json();
-      const dueños = dataUsuarios.filter((u) => u.rolId === 3); // Solo rol cliente
-      setUsuarios(dueños);
 
-      // 2️⃣ Mascotas
-      const resMascotas = await fetch("https://veterinaria-petcare.onrender.com/d/w/mascotas/all", {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      const dataMascotas = await resMascotas.json();
-      setMascotas(dataMascotas);
-
-      // 3️⃣ Veterinarios
-      const resVeterinarios = await fetch("https://veterinaria-petcare.onrender.com/d/w/veterinarios/all", {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      const dataVeterinarios = await resVeterinarios.json();
-      setVeterinarios(dataVeterinarios);
-
-      // 4️⃣ Citas
-      const resCitas = await fetch("https://veterinaria-petcare.onrender.com/d/w/citas/all", {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      const dataCitas = await resCitas.json();
-
-      // Filtrar citas de hoy
+      const data = await res.json();
       const hoy = new Date().toISOString().split("T")[0];
-      const filtradas = dataCitas.filter((c) => c.fecha === hoy);
+      const filtradas = data.filter((c) => c.fecha === hoy);
 
-      // Mapear IDs a nombres y razas
-      const mapeadas = filtradas.map((c) => {
-        const mascota = mascotas.find((m) => m.id === c.idMascota) || {};
-        const veterinario = veterinarios.find((v) => v.id === c.idVeterinario) || {};
-        const usuario = usuarios.find((u) => u.id === c.idUsuario) || {};
+      setCitasHoy(filtradas);
+    } catch (error) {
+      console.error("Error cargando citas del día", error);
+    }
+  };
 
-        return {
-          ...c,
-          nombreMascota: mascota.nombre || `ID: ${c.idMascota}`,
-          razaMascota: mascota.raza || "",
-          nombreVeterinario: veterinario.nombre || `ID: ${c.idVeterinario}`,
-          nombreDueno: usuario.nombre ? `${usuario.nombre} ${usuario.apellido || ""}` : `ID: ${c.idUsuario}`,
-        };
+  // ============================
+  //   OBTENER USUARIOS (Rol 3)
+  // ============================
+  const fetchUsuarios = async () => {
+    try {
+      const res = await fetch("https://veterinaria-petcare.onrender.com/d/w/usuarios/all", {
+        headers: { Authorization: `Bearer ${token}` },
       });
 
-      setCitasHoy(mapeadas);
+      const lista = await res.json();
+
+      // Filtrar solo rol 3 (dueños)
+      const dueños = lista.filter((u) => u.rolId === 3);
+
+      setUsuarios(dueños);
     } catch (error) {
-      console.error("Error cargando datos iniciales:", error);
+      console.error("Error cargando usuarios", error);
     }
+  };
+
+  // ============================================
+  //    ENCONTRAR NOMBRE DEL DUEÑO DESDE EL ID
+  // ============================================
+  const getNombreDueno = (idDueno) => {
+    const dueno = usuarios.find((u) => u.id === idDueno);
+
+    if (!dueno) return `ID: ${idDueno}`;
+
+    return `${dueno.nombre} ${dueno.apellido || ""}`;
   };
 
   return (
@@ -87,6 +78,7 @@ export default function HomeAssistant() {
         }}
       >
         <Box sx={{ width: "100%", maxWidth: "1400px" }}>
+
           <Typography
             variant="h4"
             sx={{
@@ -114,7 +106,7 @@ export default function HomeAssistant() {
           >
             {citasHoy.length === 0 ? (
               <Typography sx={{ fontSize: "1.3rem", color: "#1E3977" }}>
-                No hay citas registradas para hoy...
+                No hay citas registradas para hoy.
               </Typography>
             ) : (
               citasHoy.map((cita) => (
@@ -154,10 +146,6 @@ export default function HomeAssistant() {
                     <b>Veterinario:</b> {cita.nombreVeterinario}
                   </Typography>
 
-                  <Typography sx={{ mt: 1 }}>
-                    <b>Dueño:</b> {cita.nombreDueno}
-                  </Typography>
-
                   <Typography
                     sx={{
                       mt: 2,
@@ -166,7 +154,7 @@ export default function HomeAssistant() {
                       textAlign: "center",
                     }}
                   >
-                    Estado: {cita.estado || "pendiente"}
+                    Estado: {cita.estado}
                   </Typography>
                 </Paper>
               ))
@@ -208,6 +196,7 @@ export default function HomeAssistant() {
               Ver calendario completo
             </Button>
           </Box>
+
         </Box>
       </Box>
     </>
