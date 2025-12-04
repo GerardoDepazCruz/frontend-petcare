@@ -240,7 +240,7 @@ export default function Navbar() {
           </IconButton>
 
           {/* Logo */}
-          <Link to="/veterinario/home">
+          <Link to="/cliente/home">
             <img
               src="/logo-petcare.jpg"
               alt="PetCare Logo"
