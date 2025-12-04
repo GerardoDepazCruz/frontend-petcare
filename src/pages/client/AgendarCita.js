@@ -324,31 +324,39 @@ function AgendarCita() {
         </Card>
       )}
 
-      <Typography variant="h4" sx={{ mt: 8, mb: 3, fontWeight: "bold", textAlign: "center" }}>Historial de Citas</Typography>
+      <Typography
+        variant="h4"
+        sx={{ mt: 8, mb: 3, fontWeight: "bold", textAlign: "center" }}
+      >
+        Historial de Citas
+      </Typography>
 
       <Card sx={{ maxWidth: 900, margin: "0 auto", p: 3 }}>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell><b>Mascota</b></TableCell>
-              <TableCell><b>Servicio</b></TableCell>
-              <TableCell><b>Veterinario</b></TableCell>
-              <TableCell><b>Fecha</b></TableCell>
-              <TableCell><b>Hora</b></TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {historial.map((c, i) => (
-              <TableRow key={i}>
-                <TableCell>{c.mascota}</TableCell>
-                <TableCell>{c.servicio}</TableCell>
-                <TableCell>{c.veterinario}</TableCell>
-                <TableCell>{c.fecha}</TableCell>
-                <TableCell>{c.hora}</TableCell>
+        <Box sx={{ overflowX: "auto" }}>
+          <Table sx={{ minWidth: 650 }}>
+            <TableHead>
+              <TableRow>
+                <TableCell><b>Mascota</b></TableCell>
+                <TableCell><b>Servicio</b></TableCell>
+                <TableCell><b>Veterinario</b></TableCell>
+                <TableCell><b>Fecha</b></TableCell>
+                <TableCell><b>Hora</b></TableCell>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+            </TableHead>
+
+            <TableBody>
+              {historial.map((c, i) => (
+                <TableRow key={i}>
+                  <TableCell sx={{ whiteSpace: "nowrap" }}>{c.mascota}</TableCell>
+                  <TableCell sx={{ whiteSpace: "nowrap" }}>{c.servicio}</TableCell>
+                  <TableCell sx={{ whiteSpace: "nowrap" }}>{c.veterinario}</TableCell>
+                  <TableCell sx={{ whiteSpace: "nowrap" }}>{c.fecha}</TableCell>
+                  <TableCell sx={{ whiteSpace: "nowrap" }}>{c.hora}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </Box>
       </Card>
 
       <Snackbar

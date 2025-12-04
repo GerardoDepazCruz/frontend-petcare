@@ -10,26 +10,31 @@ import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import { useTheme } from "@mui/material/styles";
 
 function HomeClient() {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+
   return (
     <div style={{ backgroundColor: "#EFF9FE" }}>
       <main className="home-main">
 
-        {/* 🌟 Sección 1 */}
+        {/* Sección 1 */}
         <section
           style={{
             display: "flex",
             alignItems: "stretch",
             justifyContent: "flex-start",
-            flexWrap: "nowrap",
-            backgroundColor: "#EFF9FE",
+            flexWrap: isMobile ? "wrap" : "nowrap",
+            backgroundColor: isMobile ? "#091F5B" : "#EFF9FE",
             color: "white",
             padding: "0",
             borderRadius: "0",
             margin: "0",
             maxWidth: "100%",
-            minHeight: "400px",
+            minHeight: isMobile ? "auto" : "400px",
             position: "relative",
             overflow: "hidden",
           }}
@@ -37,9 +42,10 @@ function HomeClient() {
           {/* Imagen */}
           <div
             style={{
-              flex: "0 0 52%",
+              flex: isMobile ? "1 0 100%" : "0 0 52%",
               position: "relative",
               overflow: "visible",
+              minHeight: isMobile ? "250px" : "auto",
             }}
           >
             <img
@@ -54,19 +60,21 @@ function HomeClient() {
             />
           </div>
 
-          {/* Diagonal azul */}
-          <div
-            style={{
-              position: "absolute",
-              left: "52%",
-              top: "0",
-              bottom: "0",
-              right: "0",
-              background: "#091F5B",
-              clipPath: "polygon(8% 0, 100% 0, 100% 100%, 0 100%)",
-              zIndex: 1,
-            }}
-          ></div>
+          {/* Diagonal azul - solo desktop */}
+          {!isMobile && (
+            <div
+              style={{
+                position: "absolute",
+                left: "52%",
+                top: "0",
+                bottom: "0",
+                right: "0",
+                background: "#091F5B",
+                clipPath: "polygon(8% 0, 100% 0, 100% 100%, 0 100%)",
+                zIndex: 1,
+              }}
+            ></div>
+          )}
 
           {/* Texto y botón */}
           <div
@@ -76,8 +84,8 @@ function HomeClient() {
               flexDirection: "column",
               alignItems: "center",
               justifyContent: "center",
-              gap: "30px",
-              padding: "60px 80px 60px 120px",
+              gap: isMobile ? "20px" : "30px",
+              padding: isMobile ? "40px 20px" : "60px 80px 60px 120px",
               position: "relative",
               zIndex: 3,
               textAlign: "center",
@@ -85,12 +93,12 @@ function HomeClient() {
           >
             <h2
               style={{
-                fontSize: "2.2rem",
+                fontSize: isMobile ? "1.4rem" : "2.2rem",
                 fontWeight: "900",
                 lineHeight: "1.75",
                 margin: "0",
                 letterSpacing: "1px",
-                maxWidth: "600px",
+                maxWidth: isMobile ? "100%" : "600px",
               }}
             >
               Más que una veterinaria, somos <br />
@@ -107,9 +115,9 @@ function HomeClient() {
                 backgroundColor: "#344EAD",
                 color: "white",
                 fontWeight: "900",
-                px: 10,
-                py: 2,
-                fontSize: "1.2rem",
+                px: isMobile ? 5 : 10,
+                py: isMobile ? 1.5 : 2,
+                fontSize: isMobile ? "1rem" : "1.2rem",
                 textTransform: "none",
                 letterSpacing: "0.5px",
                 "&:hover": {
@@ -122,26 +130,27 @@ function HomeClient() {
           </div>
         </section>
 
-        {/* 🐾 Sección 2 */}
+        {/* Sección 2 */}
         <section
           style={{
             display: "flex",
             alignItems: "center",
             justifyContent: "space-between",
-            gap: "60px",
-            padding: "80px 100px",
+            flexDirection: isMobile ? "column" : "row",
+            gap: isMobile ? "30px" : "60px",
+            padding: isMobile ? "40px 20px" : "80px 100px",
             backgroundColor: "#EFF9FE",
             maxWidth: "1180px",
             margin: "0 auto",
           }}
         >
-          <div style={{ flex: "1", maxWidth: "600px" }}>
+          <div style={{ flex: "1", maxWidth: isMobile ? "100%" : "600px", textAlign: isMobile ? "center" : "left" }}>
             <h2
               style={{
-                fontSize: "2.5rem",
+                fontSize: isMobile ? "1.8rem" : "2.5rem",
                 fontWeight: "900",
                 color: "#091F5B",
-                marginBottom: "30px",
+                marginBottom: isMobile ? "20px" : "30px",
                 letterSpacing: "1px",
               }}
             >
@@ -149,11 +158,11 @@ function HomeClient() {
             </h2>
             <p
               style={{
-                fontSize: "1.3rem",
+                fontSize: isMobile ? "1rem" : "1.3rem",
                 lineHeight: "2",
                 color: "#091F5B",
                 fontWeight: "600",
-                marginBottom: "40px",
+                marginBottom: isMobile ? "25px" : "40px",
               }}
             >
               Creemos que las mascotas son parte de la familia. <br />
@@ -171,9 +180,9 @@ function HomeClient() {
                 backgroundColor: "#344EAD",
                 color: "white",
                 fontWeight: "900",
-                px: 6,
-                py: 2,
-                fontSize: "1.1rem",
+                px: isMobile ? 4 : 6,
+                py: isMobile ? 1.5 : 2,
+                fontSize: isMobile ? "1rem" : "1.1rem",
                 textTransform: "none",
                 letterSpacing: "0.5px",
                 "&:hover": {
@@ -190,7 +199,8 @@ function HomeClient() {
               src="/seccion2-inicio.jpg"
               alt="Equipo PetCare"
               style={{
-                width: "600px",
+                width: isMobile ? "100%" : "600px",
+                maxWidth: isMobile ? "400px" : "600px",
                 height: "auto",
                 boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
               }}
@@ -198,20 +208,20 @@ function HomeClient() {
           </div>
         </section>
 
-        {/* 🐾 Sección 3 */}
+        {/* Sección 3 */}
         <section
           style={{
             backgroundColor: "#6283FB",
-            padding: "60px 40px",
+            padding: isMobile ? "40px 20px" : "60px 40px",
             textAlign: "center",
           }}
         >
           <h2
             style={{
               color: "#091F5B",
-              fontSize: "2.5rem",
+              fontSize: isMobile ? "1.8rem" : "2.5rem",
               fontWeight: "900",
-              marginBottom: "30px",
+              marginBottom: isMobile ? "25px" : "30px",
               letterSpacing: "1px",
             }}
           >
@@ -221,12 +231,13 @@ function HomeClient() {
           <div
             style={{
               display: "flex",
-              justifyContent: "center",
+              justifyContent: isMobile ? "flex-start" : "center",
               alignItems: "stretch",
               flexWrap: "nowrap",
-              gap: "50px",
+              gap: isMobile ? "20px" : "50px",
               overflowX: "auto",
               paddingBottom: "30px",
+              padding: isMobile ? "0 10px 30px" : "0",
             }}
           >
             {[
@@ -259,7 +270,8 @@ function HomeClient() {
               <Card
                 key={index}
                 sx={{
-                  width: 230,
+                  width: isMobile ? 200 : 230,
+                  minWidth: isMobile ? 200 : 230,
                   borderRadius: "16px",
                   backgroundColor: "white",
                   boxShadow: "0 6px 14px rgba(0,0,0,0.1)",
@@ -273,17 +285,17 @@ function HomeClient() {
                 <CardActionArea component={Link} to="/cliente/servicios">
                   <CardMedia
                     component="img"
-                    height="150"
+                    height={isMobile ? "130" : "150"}
                     image={servicio.img}
                     alt={servicio.title}
                     sx={{ objectFit: "cover" }}
                   />
-                  <CardContent sx={{ padding: "18px" }}>
+                  <CardContent sx={{ padding: isMobile ? "14px" : "18px" }}>
                     <Typography
                       gutterBottom
                       variant="h6"
                       component="div"
-                      sx={{ fontWeight: "900", color: "#091F5B" }}
+                      sx={{ fontWeight: "900", color: "#091F5B", fontSize: isMobile ? "1rem" : "1.25rem" }}
                     >
                       {servicio.title}
                     </Typography>
@@ -293,6 +305,7 @@ function HomeClient() {
                         color: "#555",
                         lineHeight: "1.6",
                         fontWeight: 500,
+                        fontSize: isMobile ? "0.8rem" : "0.875rem",
                       }}
                     >
                       {servicio.desc}
@@ -304,28 +317,28 @@ function HomeClient() {
           </div>
         </section>
 
-        {/* 🐾 Sección 4 */}
+        {/* Sección 4 */}
         <section
           style={{
             color: "#091F5B",
-            padding: "80px 70px",
+            padding: isMobile ? "40px 20px" : "80px 70px",
           }}
         >
           <Grid
             container
-            spacing={9}
+            spacing={isMobile ? 4 : 9}
             justifyContent="center"
             alignItems="stretch"
             sx={{ maxWidth: "1500px", margin: "0 auto" }}
           >
             {/* 📨 Formulario */}
-            <Grid item xs={15} md={7}>
+            <Grid item xs={12} md={7}>
               <Paper
                 elevation={7}
                 sx={{
                   backgroundColor: "#091F5B",
                   color: "white",
-                  padding: "50px",
+                  padding: isMobile ? "30px 20px" : "50px",
                   borderRadius: "16px",
                 }}
               >
@@ -334,8 +347,9 @@ function HomeClient() {
                   sx={{
                     fontWeight: "800",
                     textAlign: "center",
-                    marginBottom: "30px",
+                    marginBottom: isMobile ? "20px" : "30px",
                     letterSpacing: "1px",
+                    fontSize: isMobile ? "1.3rem" : "1.5rem",
                   }}
                 >
                   Formulario de Contacto
@@ -346,7 +360,7 @@ function HomeClient() {
                   sx={{
                     display: "flex",
                     flexDirection: "column",
-                    gap: "25px",
+                    gap: isMobile ? "18px" : "25px",
                   }}
                 >
                   <TextField
@@ -384,7 +398,7 @@ function HomeClient() {
                     variant="outlined"
                     fullWidth
                     multiline
-                    rows={4}
+                    rows={isMobile ? 3 : 4}
                     InputLabelProps={{ style: { color: "white" } }}
                     InputProps={{
                       style: { color: "white" },
@@ -403,8 +417,8 @@ function HomeClient() {
                       backgroundColor: "white",
                       color: "#091F5B",
                       fontWeight: "900",
-                      fontSize: "1rem",
-                      py: 1.4,
+                      fontSize: isMobile ? "0.9rem" : "1rem",
+                      py: isMobile ? 1.2 : 1.4,
                       textTransform: "none",
                       "&:hover": {
                         backgroundColor: "#E5E5E5",
@@ -417,7 +431,7 @@ function HomeClient() {
               </Paper>
             </Grid>
 
-            {/* 📞 Información de contacto */}
+            {/* Información de contacto */}
             <Grid item xs={12} md={5}>
               <Box
                 sx={{
@@ -425,7 +439,7 @@ function HomeClient() {
                   flexDirection: "column",
                   justifyContent: "center",
                   height: "100%",
-                  padding: "20px 10px 30px 60px",
+                  padding: isMobile ? "20px" : "20px 10px 30px 60px",
                   color: "#091F5B",
                 }}
               >
@@ -433,20 +447,22 @@ function HomeClient() {
                   variant="h5"
                   sx={{
                     fontWeight: "800",
-                    mb: 3,
+                    mb: isMobile ? 2 : 3,
                     color: "#091F5B",
+                    fontSize: isMobile ? "1.3rem" : "1.5rem",
+                    textAlign: isMobile ? "center" : "left",
                   }}
                 >
                   Información de Contacto
                 </Typography>
 
-                <Typography sx={{ mb: 2, fontSize: "1.2rem", lineHeight: 2.8 }}>
+                <Typography sx={{ mb: 2, fontSize: isMobile ? "1rem" : "1.2rem", lineHeight: 2.8 }}>
                   📞 <strong>Teléfono:</strong> (01) 6287515 - 958 967 721
                 </Typography>
-                <Typography sx={{ mb: 2, fontSize: "1.2rem", lineHeight: 2.8 }}>
+                <Typography sx={{ mb: 2, fontSize: isMobile ? "1rem" : "1.2rem", lineHeight: 2.8 }}>
                   ✉️ <strong>Email:</strong> contacto@petcarevets.com
                 </Typography>
-                <Typography sx={{ mb: 2, fontSize: "1.2rem", lineHeight: 2.8 }}>
+                <Typography sx={{ mb: 2, fontSize: isMobile ? "1rem" : "1.2rem", lineHeight: 2.8 }}>
                   🕒 <strong>Horario:</strong> Lunes a Sábado, 9:00 am a 6:00 pm
                 </Typography>
               </Box>
@@ -454,15 +470,16 @@ function HomeClient() {
           </Grid>
         </section>
 
-        {/* 🗺️ Sección 5 */}
-        <section style={{ padding: "50px 70px", backgroundColor: "#EFF9FE" }}>
+        {/* Sección 5 */}
+        <section style={{ padding: isMobile ? "40px 20px" : "50px 70px", backgroundColor: "#EFF9FE" }}>
           <Typography
             variant="h4"
             sx={{
               fontWeight: "900",
               textAlign: "center",
-              marginBottom: "40px",
+              marginBottom: isMobile ? "30px" : "40px",
               color: "#091F5B",
+              fontSize: isMobile ? "1.8rem" : "2.125rem",
             }}
           >
             Encuéntranos en
@@ -470,20 +487,28 @@ function HomeClient() {
 
           <Grid
             container
-            spacing={20}
+            spacing={isMobile ? 4 : 20}
             justifyContent="center"
             alignItems="flex-start"
             sx={{ maxWidth: "1600px", margin: "0 auto" }}
           >
-            {/* 📍 Columna de imagen */}
+            {/* Columna de imagen */}
             <Grid item xs={12} md={5} sx={{ textAlign: "center" }}>
               <img
                 src="/seccion5-inicio.png"
                 alt="Ubicación PetCare"
-                style={{ width: "100%", maxWidth: "380px", borderRadius: "12px" }}
+                style={{ 
+                  width: "100%", 
+                  maxWidth: isMobile ? "280px" : "380px", 
+                  borderRadius: "12px" 
+                }}
               />
               <Typography
-                sx={{ marginTop: 2, fontSize: "1.1rem", color: "#091F5B" }}
+                sx={{ 
+                  marginTop: 2, 
+                  fontSize: isMobile ? "0.95rem" : "1.1rem", 
+                  color: "#091F5B" 
+                }}
               >
                 📍 <strong>Dirección</strong>
                 <br />
@@ -491,14 +516,18 @@ function HomeClient() {
               </Typography>
             </Grid>
 
-            {/* 🗺️ Columna del mapa */}
+            {/* Columna del mapa */}
             <Grid item xs={12} md={7} sx={{ textAlign: "center" }}>
               <iframe
                 title="Mapa PetCare"
                 src="https://www.google.com/maps?q=Av.+Aviaci%C3%B3n+4945,+Santiago+de+Surco,+15038,+Per%C3%BA&output=embed"
-                width="900"
-                height="500"
-                style={{ border: 0, borderRadius: "12px" }}
+                width="100%"
+                height={isMobile ? "300" : "500"}
+                style={{ 
+                  border: 0, 
+                  borderRadius: "12px",
+                  maxWidth: isMobile ? "100%" : "900px",
+                }}
                 allowFullScreen
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
